@@ -1,7 +1,6 @@
 package ui;
 
 import api.AdminResource;
-import api.HotelResource;
 import model.*;
 
 import java.util.ArrayList;
@@ -12,11 +11,9 @@ import java.util.Scanner;
 public class AdminMenu {
     private static final Scanner scanner = new Scanner(System.in);
     private final AdminResource adminResource;
-    private final HotelResource hotelResource;
 
     AdminMenu() {
         adminResource = AdminResource.getInstance();
-        hotelResource = HotelResource.getInstance();
     }
 
     private void displayMenuOptions() {
