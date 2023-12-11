@@ -170,7 +170,11 @@ public class MainMenu {
                 try {
                     System.out.println("Enter check-in date (MM/DD/YYYY)");
                     checkInDate = validateDateFormat(scanner.nextLine().trim());
-                    break;
+                    if (checkInDate.before(getCurrentDate())) {
+                        System.out.println("Invalid date. Check-in date cannot be older than current date.");
+                    } else {
+                        break;
+                    }
                 } catch (DateTimeParseException | ParseException ex) {
                     System.out.println("Invalid date format. Please enter check-in date in MM/DD/YYYY format.");
                 }
@@ -210,10 +214,15 @@ public class MainMenu {
                 String bookARoom;
 
                 if (hotelResource.isRecommendationRooms()) {
+                    checkInDate = hotelResource.getRecommndedCheckInDate();
+                    checkOutDate = hotelResource.getRecommnededCheckOutDate();
                     System.out.println("Sorry! No rooms available for the selected dates.");
-                    System.out.println("We have the following recommended date and rooms");
+                    System.out.println("We have the following recommended dates and rooms");
                     System.out.println("\n*****Recommended Dates and Rooms*****\n");
-                    System.out.println("From " + hotelResource.getRecommndedCheckInDate() + " to " + hotelResource.getRecommnededCheckOutDate());
+                    System.out.println("Recommended Dates: From " + hotelResource.getFormattedDate(checkInDate) +
+                            " to " + hotelResource.getFormattedDate(checkOutDate));
+                    System.out.println();
+                    System.out.println("Recommended Rooms");
                 } else {
                     System.out.println("\n*****Available Rooms*****\n");
                 }
@@ -253,6 +262,7 @@ public class MainMenu {
 
             if (!availableRoomNumbers.contains(roomNumber)) {
                 System.out.println("Invalid room number. Please choose a room number from the below list.");
+                System.out.println("\n*****Available Rooms*****\n");
                 displayAvailableRooms(rooms);
             } else {
                 break;
@@ -316,7 +326,7 @@ public class MainMenu {
     }
 
     private void displayAvailableRooms(Collection<IRoom> rooms) {
-
+        availableRoomNumbers.clear();
         for (IRoom room : rooms) {
             availableRoomNumbers.add(room.getRoomNumber());
             System.out.println(room);
@@ -337,6 +347,16 @@ public class MainMenu {
                 );
     }
 
+    private Date getCurrentDate() {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+            String curDate = simpleDateFormat.format(new Date());
+            return simpleDateFormat.parse(curDate);
+        } catch (ParseException ex) {
+            return new Date();
+        }
+    }
+
     private void getAdminMenu() {
         AdminMenu adminMenu = new AdminMenu();
         adminMenu.performMenuAction();
@@ -349,5 +369,7 @@ class MainMenuTester {
         MainMenu mainMenu = new MainMenu();
 
         mainMenu.performMenuAction();
+
+
     }
 }

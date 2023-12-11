@@ -35,7 +35,7 @@ public class Customer {
     }
 
     private boolean validateEmail(String email) {
-        Pattern pattern = Pattern.compile("^(.+)@[a-z]+.com$");
+        final Pattern pattern = Pattern.compile("^(.+)@[a-z]+.com$");
         return pattern.matcher(email).matches();
     }
 }

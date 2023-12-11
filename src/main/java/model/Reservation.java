@@ -1,7 +1,7 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Reservation {
@@ -17,6 +17,11 @@ public class Reservation {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.totalPrice = calculateTotalPrice();
+    }
+
+    public static String formatDate(Date dateToFormat) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+        return simpleDateFormat.format(dateToFormat);
     }
 
     public final Customer getCustomer() {
@@ -43,6 +48,7 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkInDate.toInstant(), checkOutDate.toInstant());
     }
 
+
     public final double getTotalPrice() {
         return totalPrice;
     }
@@ -53,8 +59,8 @@ public class Reservation {
                 "Email: " + customer.getEmail() + "\n" +
                 "Room number: " + room.getRoomNumber() + "\n" +
                 "Room type: " + room.getRoomType() + "\n" +
-                "Check-in date: " + checkInDate + "\n" +
-                "Check-out date: " + checkOutDate + "\n" +
+                "Check-in date: " + formatDate(checkInDate) + "\n" +
+                "Check-out date: " + formatDate(checkOutDate) + "\n" +
                 "Total price (for " + calculateTotalDays() + " day(s)): " + totalPrice;
     }
 
@@ -62,13 +68,8 @@ public class Reservation {
 
 class ReservationTester {
     public static void main(String[] args) {
-        Customer customer = new Customer("John", "Doe", "jdoe@example.com");
-        IRoom room = new Room("3", 35, RoomType.DOUBLE);
-        Calendar today = Calendar.getInstance();
-        Date checkInDate = today.getTime();
-        today.add(Calendar.DAY_OF_MONTH, 2);
-        Date checkOutDate = today.getTime();
-        Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
-        System.out.println(reservation);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+
+        System.out.println(simpleDateFormat.format(new Date()));
     }
 }

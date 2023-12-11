@@ -11,7 +11,7 @@ public class ReservationService {
     private final Map<String, List<Reservation>> reservations = new HashMap<>();
     private final Map<String, IRoom> rooms = new HashMap<>();
 
-    private boolean isRecommendation = false;
+    private boolean isRecommendation;
     private Date recommendedCheckInDate;
     private Date recommendedCheckOutDate;
 
@@ -63,6 +63,10 @@ public class ReservationService {
                     bookedRooms.add(reservation.getRoom());
                 } else if (checkOutDate.compareTo(reservation.getCheckInDate()) >= 0 && checkOutDate.compareTo(reservation.getCheckOutDate()) <= 0) {
                     bookedRooms.add(reservation.getRoom());
+                } else if (reservation.getCheckInDate().after(checkInDate) && reservation.getCheckInDate().before(checkOutDate)) {
+                    bookedRooms.add(reservation.getRoom());
+                } else if (reservation.getCheckOutDate().after(checkInDate) && reservation.getCheckOutDate().before(checkOutDate)) {
+                    bookedRooms.add(reservation.getRoom());
                 }
             }
         }
@@ -70,6 +74,7 @@ public class ReservationService {
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
+        isRecommendation = false;
         if (reservations.isEmpty()) {
             return rooms.values();
         } else {
@@ -130,6 +135,7 @@ public class ReservationService {
     public void printAllReservations() {
         for (Reservation reservation : getAllReservations()) {
             System.out.println(reservation);
+            System.out.println();
         }
     }
 
@@ -143,5 +149,9 @@ public class ReservationService {
 
     public Date getRecommendedCheckOutDate() {
         return recommendedCheckOutDate;
+    }
+
+    public String getFormattedDate(Date dateToFormat) {
+        return Reservation.formatDate(dateToFormat);
     }
 }

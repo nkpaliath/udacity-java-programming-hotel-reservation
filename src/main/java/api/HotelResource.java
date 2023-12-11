@@ -68,4 +68,8 @@ public class HotelResource {
         return reservationService.findRooms(checkIn, checkOut);
     }
 
+    public String getFormattedDate(Date dateToFormat) {
+        return reservationService.getFormattedDate(dateToFormat);
+    }
+
 }
