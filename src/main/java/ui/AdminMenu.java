@@ -132,11 +132,7 @@ public class AdminMenu {
                         System.out.println("Invalid room number. Room number should be a number greater than 0.");
                     } else {
                         roomNumber = String.valueOf(number);
-                        if (hotelResource.getRoom(roomNumber) != null) {
-                            System.out.println("Room already exists.");
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 } catch (InputMismatchException ex) {
                     scanner.nextLine();

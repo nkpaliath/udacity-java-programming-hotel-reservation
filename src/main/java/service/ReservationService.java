@@ -9,7 +9,7 @@ import java.util.*;
 public class ReservationService {
     private static ReservationService instance;
     private final Map<String, List<Reservation>> reservations = new HashMap<>();
-    private final Map<String, IRoom> rooms = new HashMap<>();
+    private final Collection<IRoom> rooms = new HashSet<>();
 
     private boolean isRecommendation;
     private Date recommendedCheckInDate;
@@ -27,15 +27,19 @@ public class ReservationService {
     }
 
     public void addRoom(IRoom room) {
-        rooms.put(room.getRoomNumber(), room);
+        if (!rooms.contains(room)) {
+            rooms.add(room);
+        } else {
+            throw new IllegalArgumentException("Room already exists.");
+        }
     }
 
     public Collection<IRoom> getAllRooms() {
-        return rooms.values();
+        return rooms;
     }
 
     public IRoom getARoom(String roomNumber) {
-        for (IRoom room : rooms.values()) {
+        for (IRoom room : rooms) {
             if (room.getRoomNumber().equals(roomNumber)) {
                 return room;
             }
@@ -76,13 +80,13 @@ public class ReservationService {
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         isRecommendation = false;
         if (reservations.isEmpty()) {
-            return rooms.values();
+            return rooms;
         } else {
             Collection<IRoom> bookedRooms = getBookedRooms(checkInDate, checkOutDate);
             if (bookedRooms.isEmpty()) {
-                return rooms.values();
+                return rooms;
             } else {
-                HashSet<IRoom> availableRooms = new HashSet<>(rooms.values());
+                HashSet<IRoom> availableRooms = new HashSet<>(rooms);
                 availableRooms.removeAll(bookedRooms);
                 if (availableRooms.isEmpty()) {
                     Calendar calendar = Calendar.getInstance();
@@ -99,10 +103,10 @@ public class ReservationService {
                         isRecommendation = true;
                         this.recommendedCheckInDate = recommendCheckInDate;
                         this.recommendedCheckOutDate = recommendCheckOutDate;
-                        return rooms.values();
+                        return rooms;
                     }
 
-                    availableRooms = new HashSet<>(rooms.values());
+                    availableRooms = new HashSet<>(rooms);
                     availableRooms.removeAll(bookedRooms);
 
                     if (!availableRooms.isEmpty()) {

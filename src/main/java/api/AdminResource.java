@@ -32,7 +32,11 @@ public class AdminResource {
 
     public void addRoom(Collection<IRoom> rooms) {
         for (IRoom room : rooms) {
-            reservationService.addRoom(room);
+            try {
+                reservationService.addRoom(room);
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Room " + room.getRoomNumber() + " already added and will not be added again.");
+            }
         }
     }
 
