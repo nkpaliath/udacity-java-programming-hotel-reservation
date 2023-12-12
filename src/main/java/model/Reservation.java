@@ -9,7 +9,7 @@ public class Reservation {
     private final IRoom room;
     private final Date checkInDate;
     private final Date checkOutDate;
-    private final double totalPrice;
+    private double totalPrice;
 
     public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         this.customer = customer;
@@ -48,9 +48,12 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkInDate.toInstant(), checkOutDate.toInstant());
     }
 
-
     public final double getTotalPrice() {
         return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
