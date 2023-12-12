@@ -16,8 +16,8 @@ import java.util.*;
 public class MainMenu {
 
     private static Scanner scanner = new Scanner(System.in);
-    private final HotelResource hotelResource;
-    private final AdminResource adminResource;
+    public final HotelResource hotelResource;
+    public final AdminResource adminResource;
     private final Collection<String> availableRoomNumbers = new ArrayList<>();
 
     private String newCustomerEmail;

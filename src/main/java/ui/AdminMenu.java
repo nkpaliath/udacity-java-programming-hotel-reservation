@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class AdminMenu {
     private static final Scanner scanner = new Scanner(System.in);
-    private final AdminResource adminResource;
+    public final AdminResource adminResource;
 
     AdminMenu() {
         adminResource = AdminResource.getInstance();
